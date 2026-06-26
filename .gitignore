@@ -1,0 +1,52 @@
+# Vivado / ISE project files
+*.jou
+*.log
+*.str
+*.xpr
+*.xise
+*.bit
+*.bin
+*.mcs
+*.prm
+*.bgn
+*.drc
+*.lso
+*.ngc
+*.ngd
+*.ngr
+*.ncd
+*.pcf
+*.rbb
+*.rbd
+*.syr
+*.twr
+*.twx
+*.unroutes
+*.ut
+*.xpi
+*.xwbt
+
+# Simulation files
+*.vcd
+*.wlf
+*.wdb
+*.fst
+xsim.dir/
+.vivado/
+.sim/
+sim/
+*.backup.jou
+*.backup.log
+
+# IP core files
+*.xci
+*.dcp
+*.xdc
+
+# Temp / backup files
+*~
+*.swp
+*.orig
+*.bak
+.DS_Store
+Thumbs.db
