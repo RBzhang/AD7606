@@ -72,21 +72,23 @@ module top #(
     
     output wire [2:0]  adc_os
 
+
+
 );
+
+    // 只保留前四个通道。
+    // 这四个输出只在 sample_tick 时同步更新，data_valid 也与 sample_tick 对齐.
     wire        adc_range;
     wire        adc_stby;
     wire        adc_ref_select;
     wire        adc_par_ser_byte_sel;
-    // 只保留前四个通道。
-    // 这四个输出只在 sample_tick 时同步更新，data_valid 也与 sample_tick 对齐。
+    (* keep = "true", mark_debug = "true" *) reg signed [15:0] ch1_data;
+    (* keep = "true", mark_debug = "true" *) reg signed [15:0] ch2_data;
+    (* keep = "true", mark_debug = "true" *) reg signed [15:0] ch3_data;
+    (* keep = "true", mark_debug = "true" *) reg signed [15:0] ch4_data;
+    (* keep = "true", mark_debug = "true" *) reg               data_valid;
 
 
-
-    reg signed [15:0] ch1_data;
-    reg signed [15:0] ch2_data;
-    reg signed [15:0] ch3_data;
-    reg signed [15:0] ch4_data;
-    reg               data_valid;
 
     ila_data ila_data_inst (
         .clk(clk),
