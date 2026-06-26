@@ -9,14 +9,15 @@
 //   Testbench for the AD7606/AD7606C parallel read controller.
 //
 //   Test points:
-//   1. Generate a 50 MHz system clock and release reset.
-//   2. Model an AD7606/AD7606C-like ADC:
+//   1. Generate a 50 MHz system clock.
+//   2. Verify the resetless FPGA logic starts from configuration-time initial values.
+//   3. Model an AD7606/AD7606C-like ADC:
 //      - CONVST rising edge starts one conversion frame.
 //      - BUSY stays high for a fixed conversion time.
 //      - Parallel DB[15:0] outputs V1, V2, ... on each RD falling edge.
-//   3. Check that top outputs ch1_data~ch4_data only when data_valid is high.
-//   4. Check that data_valid pulses are strictly spaced by SAMPLE_RATE_HZ.
-//   5. Check that ch1_data~ch4_data match the expected sampled frame.
+//   4. Check that top outputs ch1_data~ch4_data only when data_valid is high.
+//   5. Check that data_valid pulses are strictly spaced by SAMPLE_RATE_HZ.
+//   6. Check that ch1_data~ch4_data match the expected sampled frame.
 //////////////////////////////////////////////////////////////////////////////////
 
 module testbench();
@@ -46,7 +47,6 @@ module testbench();
     // ============================================================
 
     reg         clk;
-    reg         rst_n;
 
     wire        adc_convst_a;
     wire        adc_convst_b;
@@ -116,7 +116,6 @@ module testbench();
         .RD_HIGH_CLKS     (RD_HIGH_CLKS)
     ) dut (
         .clk                 (clk),
-        .rst_n               (rst_n),
 
         .adc_busy            (adc_busy),
         .adc_db              (adc_db),
@@ -142,18 +141,12 @@ module testbench();
     );
 
     // ============================================================
-    // Clock and reset
+    // Clock
     // ============================================================
 
     initial begin
         clk = 1'b0;
         forever #(CLK_PERIOD_NS / 2) clk = ~clk;
-    end
-
-    initial begin
-        rst_n = 1'b0;
-        #(CLK_PERIOD_NS * 20);
-        rst_n = 1'b1;
     end
 
     // ============================================================
@@ -269,7 +262,7 @@ module testbench();
     // ============================================================
 
     always @(posedge clk) begin
-        if (rst_n && data_valid) begin
+        if (data_valid) begin
             $display("[%0t ns] DUT output: valid=%0d, ch1=%h, ch2=%h, ch3=%h, ch4=%h",
                      $time, valid_count, ch1_data, ch2_data, ch3_data, ch4_data);
 
@@ -329,12 +322,28 @@ module testbench();
     end
 
     // ============================================================
-    // Basic configuration checks
+    // Basic configuration and initial-value checks
     // ============================================================
 
     initial begin
-        wait(rst_n == 1'b1);
         #(CLK_PERIOD_NS * 5);
+
+        if (adc_convst_a !== 1'b0) begin
+            $display("ERROR: adc_convst_a initial value should be 0.");
+            error_count = error_count + 1;
+        end
+        if (adc_convst_b !== 1'b0) begin
+            $display("ERROR: adc_convst_b initial value should be 0.");
+            error_count = error_count + 1;
+        end
+        if (adc_cs_n !== 1'b1) begin
+            $display("ERROR: adc_cs_n initial value should be 1.");
+            error_count = error_count + 1;
+        end
+        if (adc_rd_n !== 1'b1) begin
+            $display("ERROR: adc_rd_n initial value should be 1.");
+            error_count = error_count + 1;
+        end
 
         if (adc_par_ser_byte_sel !== 1'b0) begin
             $display("ERROR: adc_par_ser_byte_sel should be 0 in parallel mode.");
