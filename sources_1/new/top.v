@@ -79,13 +79,23 @@ module top #(
     wire        adc_par_ser_byte_sel;
     // 只保留前四个通道。
     // 这四个输出只在 sample_tick 时同步更新，data_valid 也与 sample_tick 对齐。
-    output reg signed [15:0] ch1_data,
-    output reg signed [15:0] ch2_data,
-    output reg signed [15:0] ch3_data,
-    output reg signed [15:0] ch4_data,
-    output reg               data_valid
-);
 
+
+
+    reg signed [15:0] ch1_data;
+    reg signed [15:0] ch2_data;
+    reg signed [15:0] ch3_data;
+    reg signed [15:0] ch4_data;
+    reg               data_valid;
+
+    ila_data ila_data_inst (
+        .clk(clk),
+        .probe4(ch1_data),
+        .probe1(ch2_data),
+        .probe2(ch3_data),
+        .probe3(ch4_data),
+        .probe0(data_valid)
+    );
     // ============================================================
     // 固定配置
     // ============================================================
