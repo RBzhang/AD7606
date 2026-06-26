@@ -63,21 +63,29 @@ module top #(
 
     // 如果这些引脚由 FPGA 控制，可以这样输出；
     // 如果你的硬件已经固定接 GND/VCC，可以删掉这些端口。
-    output wire        adc_par_ser_byte_sel,
-    output wire [2:0]  adc_os,
-    output wire        adc_range,
-    output wire        adc_stby,
-    output wire        adc_ref_select,
+    
+    output wire [2:0]  adc_os
 
+);
+    wire        adc_range;
+    wire        adc_stby;
+    wire        adc_ref_select;
+    wire        adc_par_ser_byte_sel;
     // 只保留前四个通道。
     // 这四个输出只在 sample_tick 时同步更新，data_valid 也与 sample_tick 对齐。
-    output reg signed [15:0] ch1_data,
-    output reg signed [15:0] ch2_data,
-    output reg signed [15:0] ch3_data,
-    output reg signed [15:0] ch4_data,
-    output reg               data_valid
-);
-
+    (* keep = "true", mark_debug = "true" *) reg signed [15:0] ch1_data;
+    (* keep = "true", mark_debug = "true" *) reg signed [15:0] ch2_data;
+    (* keep = "true", mark_debug = "true" *) reg signed [15:0] ch3_data;
+    (* keep = "true", mark_debug = "true" *) reg signed [15:0] ch4_data;
+    (* keep = "true", mark_debug = "true" *) reg               data_valid;
+    ila_data u_ila_data (
+        .clk(clk),
+        .probe4(ch1_data),
+        .probe1(ch2_data),
+        .probe2(ch3_data),
+        .probe3(ch4_data),
+        .probe0(data_valid)
+    );
     // ============================================================
     // 固定配置
     // ============================================================
