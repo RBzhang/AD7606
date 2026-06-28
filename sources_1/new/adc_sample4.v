@@ -71,7 +71,7 @@ module adc_sample4 #(
     // 如果你的硬件已经固定接 GND/VCC，可以删掉这些端口。
     
     output wire [2:0]  adc_os,
-    output reg       data_valid,
+    output reg       data_valid = 1'b0,
     output wire signed [63:0] data_out
 
 
