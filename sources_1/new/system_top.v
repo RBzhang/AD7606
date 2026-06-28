@@ -34,7 +34,7 @@ module system_top #(
 )(
     // PL user clock for ADC acquisition and BRAM write port.
     // Keep this consistent with SYS_CLK_HZ.
-    input  wire        clk,
+    //input  wire        clk,
 
     // =========================
     // AD7606/AD7606C -> FPGA PL
@@ -171,6 +171,8 @@ module system_top #(
         .DDR_ras_n         (DDR_ras_n),
         .DDR_reset_n       (DDR_reset_n),
         .DDR_we_n          (DDR_we_n),
+        
+        .FCLK_CLK0          (clk),
 
         .FCLK_RESET0_N_0   (ps_fclk_resetn),
 

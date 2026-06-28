@@ -2,7 +2,7 @@
 //Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 //--------------------------------------------------------------------------------
 //Tool Version: Vivado v.2024.2.2 (win64) Build 6060944 Thu Mar 06 19:10:01 MST 2025
-//Date        : Sun Jun 28 16:24:18 2026
+//Date        : Sun Jun 28 16:51:57 2026
 //Host        : Zhangkun running 64-bit major release  (build 9200)
 //Command     : generate_target design_1_wrapper.bd
 //Design      : design_1_wrapper
@@ -33,6 +33,7 @@ module design_1_wrapper
     DDR_ras_n,
     DDR_reset_n,
     DDR_we_n,
+    FCLK_CLK0,
     FCLK_RESET0_N_0,
     FIXED_IO_ddr_vrn,
     FIXED_IO_ddr_vrp,
@@ -64,6 +65,7 @@ module design_1_wrapper
   inout DDR_ras_n;
   inout DDR_reset_n;
   inout DDR_we_n;
+  output FCLK_CLK0;
   output FCLK_RESET0_N_0;
   inout FIXED_IO_ddr_vrn;
   inout FIXED_IO_ddr_vrp;
@@ -96,6 +98,7 @@ module design_1_wrapper
   wire DDR_ras_n;
   wire DDR_reset_n;
   wire DDR_we_n;
+  wire FCLK_CLK0;
   wire FCLK_RESET0_N_0;
   wire FIXED_IO_ddr_vrn;
   wire FIXED_IO_ddr_vrp;
@@ -129,6 +132,7 @@ module design_1_wrapper
         .DDR_ras_n(DDR_ras_n),
         .DDR_reset_n(DDR_reset_n),
         .DDR_we_n(DDR_we_n),
+        .FCLK_CLK0(FCLK_CLK0),
         .FCLK_RESET0_N_0(FCLK_RESET0_N_0),
         .FIXED_IO_ddr_vrn(FIXED_IO_ddr_vrn),
         .FIXED_IO_ddr_vrp(FIXED_IO_ddr_vrp),
