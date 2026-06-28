@@ -40,7 +40,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module top #(
+module adc_sample4 #(
     parameter integer SYS_CLK_HZ       = 50_000_000,
     parameter integer SAMPLE_RATE_HZ   = 100_000,   // AD7606C 可根据实际手册和时序进一步提高
     parameter integer ADC_TOTAL_CH     = 8,         // AD7606/AD7606C=8, AD7606-6=6, AD7606-4=4
@@ -56,7 +56,7 @@ module top #(
     // =========================
     input  wire        adc_busy,
     input  wire [15:0] adc_db,
-    input  wire        adc_frstdata,
+    // input  wire        adc_frstdata,
 
     // =========================
     // FPGA -> AD7606/AD7606C
@@ -70,7 +70,9 @@ module top #(
     // 如果这些引脚由 FPGA 控制，可以这样输出；
     // 如果你的硬件已经固定接 GND/VCC，可以删掉这些端口。
     
-    output wire [2:0]  adc_os
+    output wire [2:0]  adc_os,
+    output reg       data_valid,
+    output wire signed [63:0] data_out
 
 
 
@@ -86,9 +88,9 @@ module top #(
     (* keep = "true", mark_debug = "true" *) reg signed [15:0] ch2_data;
     (* keep = "true", mark_debug = "true" *) reg signed [15:0] ch3_data;
     (* keep = "true", mark_debug = "true" *) reg signed [15:0] ch4_data;
-    (* keep = "true", mark_debug = "true" *) reg               data_valid;
+    // (* keep = "true", mark_debug = "true" *) reg               data_valid;
 
-
+    assign data_out = {ch1_data, ch2_data, ch3_data, ch4_data};
 
     ila_data ila_data_inst (
         .clk(clk),
